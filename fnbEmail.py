@@ -16,17 +16,31 @@ from tabulate import tabulate
 
 def getdate():
 	now = datetime.datetime.now()
-	return now.strftime('%B') + ' ' + str(now.day) + ' ' + str(now.year)
+	return now.strftime('%B') + ' ' + str(now.day + 4) + ' ' + str(now.year)
 
 def getMIME():
 	text = '''
-	Test table,
+	Hello fine folks, \n
+	It's time to sign up for Food Not Bombs once again :)\n Please sign up for the tasks that you're planning to do on the sign up sheet: https://docs.google.com/spreadsheets/d/1rOeV_fEl_1wLedUWv44LzcK3VeLCGiL-UmRRyu-8KIg/edit#gid=1078847430
+	
+	Here is a table of the usual tasks: 
 	{table}
+	
+	Take care, 
+	Auto the Email Robot
 	'''
+
 	html = '''
 	<html><body>
-	<p>Test table, </p>
+	<p>Hello fine folks, </p>
+	<p>It's time to sign up for Food Not Bombs once again :)</p>
+	<p>Please sign up for the tasks that you're planning to do <a href="https://docs.google.com/spreadsheets/d/1rOeV_fEl_1wLedUWv44LzcK3VeLCGiL-UmRRyu-8KIg/edit#gid=1078847430">on the sign-up sheet!</a></p><br>
+	<p>Here is a table of the usual tasks:</p>
 	{table}
+
+	<p>Take care, <br>
+	Auto the Email Robot<br><br>
+	PS: I am a robot written by Stacy Gaikovaia. Please email stacygaikovaia@gmail.com if I am making mistakes or if you have any suggestions for improvements</p>
 	</body></html>
 	'''
 	with open('table.log') as tab:
@@ -39,7 +53,7 @@ def getMIME():
 	return MIMEMultipart("alternative", None, [MIMEText(text), MIMEText(html,'html')])
 	
 def main():
-	usr = 'stacygaikovaia'
+	usr = 'fnb.kitchener'
 	passwd = getpass.getpass('Enter Password')
 
 	serv = imaplib.IMAP4_SSL('imap.gmail.com')
@@ -49,17 +63,12 @@ def main():
 	new_message = getMIME()
 	new_message['Subject'] = 'Food Not Bombs Sign Up Reminder (' + getdate() + ')'
 	new_message['To'] = 'fnb@lists.wpirg.org'
-	new_message['From'] = 'stacygaikovaia@gmail.com'
+	new_message['From'] = usr + '@gmail.com'
 
 	serv.append('[Gmail]/Drafts', '',imaplib.Time2Internaldate(time.time()), str(new_message))
 
-#	for emailid in items:
-#		resp, data = serv.fetch(emailid, "(RFC822)") # fetching the mail, "`(RFC822)`" means "get the whole stuff", but you can ask for headers only, etc
-#		email_body = data[0][1] # getting the mail content
-#		print email_body
-#		mail = email.message_from_string(email_body) # parsing the mail content to get a mail object
 
 
 if __name__ == '__main__':
 	print getdate()
-	res = main()
+	main()
