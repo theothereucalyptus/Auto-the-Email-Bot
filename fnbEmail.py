@@ -86,8 +86,7 @@ def getMIME():
 	return MIMEMultipart("alternative", None, [MIMEText(text), MIMEText(html,'html')])
 	
 def main():
-#	usr = 'fnb.kitchener'
-	usr = 'stacygaikovaia'
+	usr = 'fnb.kitchener'
 	passwd = getpass.getpass('Enter Password')
 
 	serv = imaplib.IMAP4_SSL('imap.gmail.com')
