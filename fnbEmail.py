@@ -15,9 +15,16 @@ from tabulate import tabulate
 #https://pymotw.com/2/imaplib/#uploading-messages
 # python celery 
 
+def calctimedelta(now):
+    weekday = now.weekday()
+    if (weekday == 6):  #sunday
+		return 6
+    else:
+		return (5 - weekday) 
+
 def getdate():
 	now = datetime.date.today()
-	date2 = now + datetime.timedelta(days=4)
+	date2 = now + datetime.timedelta(days=calctimedelta(now))
 	return date2.strftime('%B') + ' ' + str(date2.day) + ' ' + str(date2.year)
 
 def parselog(filename):
@@ -73,7 +80,7 @@ def getMIME():
 	</table>
 	<p>Take care, <br>
 	Auto the Email Robot<br><br>
-	PS: I am a robot written by Stacy Gaikovaia. Please email stacygaikovaia@gmail.com if I am making mistakes or if you have any suggestions for improvements</p>
+	Blep Blop! I am a robot written by Stacy Gaikovaia. Please email stacygaikovaia@gmail.com if I am making mistakes or if you have any suggestions for improvements</p>
 	</body></html> 
 	''' % table
 	with open('table.log') as tab:
@@ -103,5 +110,4 @@ def main():
 
 
 if __name__ == '__main__':
-	print getdate()
 	main()
